@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="edu.fjnu.birdie.notemd_Mid.noteEdit">
+
+
+
+    <item
+        android:id="@+id/ab_delete_forever"
+        android:orderInCategory="100"
+        android:title="action_search"
+        android:icon="@drawable/ic_delete_forever_white_18dp"
+        app:showAsAction="ifRoom"/>
+
+
+
+</menu>
