@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -56,6 +57,12 @@ public class Login_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_);
+
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+
+                .detectDiskReads().detectDiskWrites().detectNetwork()
+
+                .penaltyLog().build());
         login=(Button)findViewById(R.id.login);
         register=(Button)findViewById(R.id.register);
         forgetpwd=(Button)findViewById(R.id.forgetpwd);
