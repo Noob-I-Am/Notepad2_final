@@ -58,7 +58,6 @@ public class Login_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_);
 
-        //android4.0以后对要联网的代码必须在新开一个线程来做。
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
 
                 .detectDiskReads().detectDiskWrites().detectNetwork()
@@ -83,22 +82,22 @@ public class Login_Activity extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent=new Intent(Login_Activity.this,Register_Activity.class);
-//                startActivity(intent);
+                Intent intent=new Intent(Login_Activity.this,Register_Activity.class);
+                startActivity(intent);
             }
         });
         forgetpwd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent=new Intent(Login_Activity.this,Forgetpwd_Activity.class);
-//                startActivity(intent);
+                Intent intent=new Intent(Login_Activity.this,Forgetpwd_Activity.class);
+                startActivity(intent);
             }
         });
         updatepwd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent=new Intent(Login_Activity.this,Updatepwd_Activity.class);
-//                startActivity(intent);
+                Intent intent=new Intent(Login_Activity.this,Updatepwd_Activity.class);
+                startActivity(intent);
             }
         });
         login.setOnClickListener(new View.OnClickListener() {
