@@ -20,6 +20,7 @@ public class User_function {
     private DataInputStream in=null;
     private DataOutputStream out=null;
     private Socket socket;
+    public static int isLogin = 0 ;
 
 
 
