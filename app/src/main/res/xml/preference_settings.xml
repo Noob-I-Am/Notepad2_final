@@ -5,17 +5,13 @@
 
         <PreferenceScreen android:summary="云端备份需要登录"
             android:title="登录"
-            android:enabled="false"
+            android:enabled="true"
             >
-            <EditTextPreference
-            android:summary="An example that uses an edit text dialog"
-            android:key="UsernameKey"
-            android:title="用户名" />
-            <EditTextPreference
-                android:summary="An example that uses an edit text dialog"
-                android:key="PasswordKey"
-                android:title="密码" />
-
+            <intent
+                android:action="android.intent.action.MAIN"
+                android:targetPackage="edu.fjnu.birdie.notepad2"
+                android:targetClass="edu.fjnu.birdie.notepad2.Login_Activity"
+                />
         </PreferenceScreen>
 
         <PreferenceScreen android:summary="将文档保存在本地备份"
@@ -68,8 +64,8 @@
              >
             <intent
                 android:action="android.intent.action.MAIN"
-                android:targetPackage="edu.fjnu.birdie.midnotepad"
-                android:targetClass="edu.fjnu.birdie.midnotepad.AboutUsActivity"
+                android:targetPackage="edu.fjnu.birdie.notepad2"
+                android:targetClass="edu.fjnu.birdie.notepad2.AboutUsActivity"
                 />
         </PreferenceScreen>
 
