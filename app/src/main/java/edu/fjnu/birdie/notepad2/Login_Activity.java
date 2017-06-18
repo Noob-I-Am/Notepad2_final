@@ -58,11 +58,13 @@ public class Login_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_);
 
+        //android4.0以后对要联网的代码必须在新开一个线程来做。
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
 
                 .detectDiskReads().detectDiskWrites().detectNetwork()
 
                 .penaltyLog().build());
+
         login=(Button)findViewById(R.id.login);
         register=(Button)findViewById(R.id.register);
         forgetpwd=(Button)findViewById(R.id.forgetpwd);
