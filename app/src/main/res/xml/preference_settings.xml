@@ -16,12 +16,13 @@
 
         <PreferenceScreen android:summary="将文档保存在本地备份"
             android:title="本地备份"
+            android:enabled="true"
             >
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="isSecondCheck"
-                android:summary="Preference that is on next screen but same hierarchy"
-                android:title="Toggle preferences" />
+            <intent
+                android:action="android.intent.action.MAIN"
+                android:targetPackage="edu.fjnu.birdie.notepad2.Service"
+                android:targetClass="edu.fjnu.birdie.notepad2.Service.Backup_Service"
+                />
         </PreferenceScreen>
 
         <SwitchPreference
