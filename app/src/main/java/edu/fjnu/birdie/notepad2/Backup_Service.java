@@ -1,4 +1,4 @@
-package edu.fjnu.birdie.notepad2.Service;
+package edu.fjnu.birdie.notepad2;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.widget.Toast;
 
 import edu.fjnu.birdie.notepad2.Utils.NotesDB;
@@ -31,9 +32,8 @@ public class Backup_Service extends IntentService{
                 else
                     Toast.makeText(getApplicationContext(), "备份失败", Toast.LENGTH_SHORT).show();
             }
-            if(msg.what==0x11) {
+            if(msg.what==0x12) {
                     Toast.makeText(getApplicationContext(), "请登录", Toast.LENGTH_SHORT).show();
-
             }
         }
     };
@@ -50,6 +50,7 @@ public class Backup_Service extends IntentService{
         SharedPreferences read=getSharedPreferences("login",MODE_PRIVATE);
         if(read.contains("user_id")) {
             String uid = read.getString("user_id", "");
+            Log.d("UID",uid);
             String result = user_back.backup(dbread, uid);
             Bundle info = new Bundle();
             info.putString("result", result);

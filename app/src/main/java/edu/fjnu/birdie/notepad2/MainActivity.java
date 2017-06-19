@@ -2,9 +2,12 @@ package edu.fjnu.birdie.notepad2;
 
 import android.app.AlertDialog;
 import android.app.SearchManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -336,9 +339,40 @@ public class MainActivity extends AppCompatActivity implements OnScrollListener,
                 startActivity(intent);
                 break;
             }
+            case R.id.action_backup :{
+                final Intent sIntent = new Intent(this, Backup_Service.class);
+                sIntent.setAction("edu.fjnu.birdie.notepad2.Backup_Service");
+                //sIntent.setPackage(this.getPackageName());
+                //startService(sIntent);
+                Intent eIntent = new Intent(getExplicitIntent(mContext,sIntent));
+                startService(eIntent);
+                break;
+
+               // bindService(intent,coon,Service.BIND_AUTO_CREATE)
+            }
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    //将隐式启动转换为显示启动
+    public static Intent getExplicitIntent(Context context, Intent implicitIntent) {
+        // Retrieve all services that can match the given intent
+        PackageManager pm = context.getPackageManager();
+        List<ResolveInfo> resolveInfo = pm.queryIntentServices(implicitIntent, 0);
+        // Make sure only one match was found
+        if (resolveInfo == null || resolveInfo.size() != 1) {
+            return null;
+        }
+        // Get component info and create ComponentName
+        ResolveInfo serviceInfo = resolveInfo.get(0);
+        String packageName = serviceInfo.serviceInfo.packageName;
+        String className = serviceInfo.serviceInfo.name;
+        ComponentName component = new ComponentName(packageName, className);
+        // Create a new intent. Use the old one for extras and such reuse
+        Intent explicitIntent = new Intent(implicitIntent);
+        // Set the component to be explicit
+        explicitIntent.setComponent(component);
+        return explicitIntent;
     }
 
     //如果列表项为空,则显示背景和文字

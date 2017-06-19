@@ -50,10 +50,10 @@ public class User_function {
             JSONObject json=new JSONObject();
 	        	try {
 					json.put("id", result.getString(0));
-					json.put("title", result.getString(1));
-					json.put("contain", result.getString(2));
-                    json.put("date", result.getString(4));
-                    json.put("dirid", result.getString(3));
+					json.put("title", result.getString(0));
+					json.put("contain", result.getString(0));
+                    json.put("date", result.getString(0));
+                    json.put("dirid", result.getString(0));
 				} catch (JSONException e) {
 					// TODO 自动生成的 catch 块
 					e.printStackTrace();

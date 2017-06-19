@@ -68,11 +68,9 @@
         <activity android:name=".Login_Activity" />
         <activity android:name=".Register_Activity" />
         <activity android:name=".Forgetpwd_Activity" />
-        <activity android:name=".Updatepwd_Activity">
-            `
-        </activity>
+        <activity android:name=".Updatepwd_Activity"></activity>
         <service
-            android:name=".Service.Backup_Service"
+            android:name=".Backup_Service"
             android:exported="false"></service>
     </application>
 

@@ -14,8 +14,8 @@
                 />
         </PreferenceScreen>
 
-        <PreferenceScreen android:summary="将文档保存在本地备份"
-            android:title="本地备份"
+        <PreferenceScreen android:summary="将文档保存在云端"
+            android:title="备份"
             android:enabled="true"
             >
             <intent
@@ -64,7 +64,7 @@
             android:title="关于我们"
              >
             <intent
-                android:action="android.intent.action.MAIN"
+                android:action="android.intent.action.BACK_UP_SERVICE"
                 android:targetPackage="edu.fjnu.birdie.notepad2"
                 android:targetClass="edu.fjnu.birdie.notepad2.AboutUsActivity"
                 />

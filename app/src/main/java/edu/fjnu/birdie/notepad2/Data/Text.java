@@ -9,6 +9,8 @@ public class Text implements Serializable {
     String contain;
     String date;
     String dirid;
+    private static final long serialVersionUID = 599271540097165139l;
+    
     public String getId() {
         return id;
     }
