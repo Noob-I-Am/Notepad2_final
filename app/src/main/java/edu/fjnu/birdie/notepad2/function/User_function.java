@@ -43,14 +43,17 @@ public class User_function {
             out.writeUTF("restore");
             out.writeUTF(uid);
             JSONArray array = new JSONArray(in.readUTF());
+            String s="delete from "+NotePad.Notes.TABLE_NAME_NOTES;
+            sql.execSQL(s);
+            Log.d("Array.Length",array.length()+"");
             for(int i=0;i<array.length();i++)
             {
                     JSONObject json=array.getJSONObject(i);
-                    String s="delete from "+NotePad.Notes.TABLE_NAME_NOTES;
-                    sql.execSQL(s);
                     String id=(String)json.get("id");
                     String title=(String)json.get("title");
+
                     String contain=(String)json.get("contain");
+                    Log.d("Title",contain);
                     String date=(String)json.get("date");
                     String dirid=(String)json.get("dirid");
                     ContentValues values=new ContentValues();
@@ -59,10 +62,12 @@ public class User_function {
                     values.put(NotePad.Notes.COLUMN_NAME_NOTE_CONTENT,contain);
                     values.put(NotePad.Notes.COLUMN_NAME_NOTE_DATE,date);
                     values.put(NotePad.Notes.COLUMN_NAME_NOTE_CATEGORY,dirid);
+
                     sql.insert(NotePad.Notes.TABLE_NAME_NOTES,null,values);
 
-                return "success";
+
             }
+            return "success";
 
         } catch (IOException e) {
             Log.d("---register", e.getMessage());

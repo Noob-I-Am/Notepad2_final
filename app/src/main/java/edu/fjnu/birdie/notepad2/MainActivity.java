@@ -69,8 +69,12 @@ public class MainActivity extends AppCompatActivity implements OnScrollListener,
             {
                 Bundle info=msg.getData();
                 String result=info.getString("result");
-                if(result.equals("success"))
+                if(result.equals("success")) {
+
+
                     Toast.makeText(MainActivity.this, "还原成功", Toast.LENGTH_SHORT).show();
+                    RefreshNotesList();
+                }
                 else
                     Toast.makeText(MainActivity.this, "还原失败", Toast.LENGTH_SHORT).show();
 
