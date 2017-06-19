@@ -47,6 +47,8 @@ import java.util.regex.Pattern;
 
 import edu.fjnu.birdie.notepad2.Utils.NotePad;
 import edu.fjnu.birdie.notepad2.Utils.NotesDB;
+import edu.fjnu.birdie.notepad2.stuff.DrawingActivity;
+import edu.fjnu.birdie.notepad2.stuff.RecordingClass;
 
 public class noteEdit extends AppCompatActivity {
 
@@ -65,7 +67,9 @@ public class noteEdit extends AppCompatActivity {
     public static int id;
     public String setCategory;
     public static String CopyRe;
-
+    public String mPath;
+    public Uri myuri;
+    public String UsingId="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -104,6 +108,7 @@ public class noteEdit extends AppCompatActivity {
         Bundle myBundle = this.getIntent().getExtras();
         last_content = myBundle.getString("info");
         last_title = myBundle.getString("info_title");
+        UsingId=myBundle.getString("id");
 
         Log.d("LAST_CONTENT",last_content);
         Log.d("LAST_TITLE",last_title);
@@ -143,7 +148,7 @@ public class noteEdit extends AppCompatActivity {
                 Log.d("ImageState",1+"");
             }
         });
-
+        System.out.println("本记录id++++++++++"+id);
     }
 
     @Override
@@ -340,7 +345,23 @@ public class noteEdit extends AppCompatActivity {
             case R.id.ab_add_category:{
                 addCategory();
                 break;
+
             }
+            case R.id.canvas:
+                Intent intent =new Intent();
+                intent.putExtra("uri",myuri);
+                intent.putExtra("path",mPath);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.setClass(getApplicationContext(),DrawingActivity.class);
+                startActivityForResult(intent,100);
+                break;
+
+            case R.id.voice:
+                Intent i= new Intent(getApplicationContext(),RecordingClass.class);
+                                Bundle b=new Bundle();
+                               i.putExtra("authentication",UsingId);
+                               startActivity(i);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -377,6 +398,37 @@ public class noteEdit extends AppCompatActivity {
                 try {
                     //Bitmap originalBitmap = BitmapFactory.decodeStream(resolver
                     //        .openInputStream(realUri));
+                    Bitmap originalBitmap = BitmapFactory.decodeFile(Imgpath);
+
+                    Log.d("imageUri",originalUri.toString() );
+                    if(originalBitmap != null) {
+                        bitmap = resizeImage(originalBitmap);
+                    }else{
+                        Log.d("ob","null");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (bitmap != null) {
+                    insertIntoEditText(getBitmapMime(bitmap, realUri));
+                } else {
+                    Toast.makeText(noteEdit.this, "获取图片失败",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+            if(requestCode==100)
+            {
+                System.out.println("传入-----");
+                Uri originalUri =(Uri) intent.getExtras().get("uri");
+
+                String Imgpath = (String)intent.getExtras().get("path");
+                Uri realUri = Uri.parse("file://"+Imgpath);//真实路径转化为Uri
+                String realPath = "content://media/"+Imgpath;
+
+
+
+                try {
+
                     Bitmap originalBitmap = BitmapFactory.decodeFile(Imgpath);
 
                     Log.d("imageUri",originalUri.toString() );

@@ -262,6 +262,7 @@ public class MainActivity extends AppCompatActivity implements OnScrollListener,
         Bundle bundle = new Bundle();
         bundle.putString("info", content1);
         bundle.putString("info_title", title1);
+        bundle.putString("id",No);
         noteEdit.id = Integer.parseInt(No);
         myIntent.putExtras(bundle);
         myIntent.setClass(MainActivity.this, noteEdit.class);

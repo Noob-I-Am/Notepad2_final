@@ -10,14 +10,23 @@
         android:orderInCategory="80"
         android:title="add_category"
         android:icon="@drawable/ic_bookmark_white_18dp"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
     <item
         android:id="@+id/ab_save"
         android:orderInCategory="100"
         android:title="action_search"
         android:icon="@drawable/ic_save_white_18dp"
-        app:showAsAction="ifRoom"/>
-
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/canvas"
+        android:title="手绘"
+        android:icon="@drawable/ic_paint"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/voice"
+        android:title="录音"
+        android:icon="@drawable/ic_action_paint"
+        app:showAsAction="always"/>
 
 
 </menu>

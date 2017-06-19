@@ -4,6 +4,10 @@
     <color name="colorPrimaryDark">#455A64</color>
     <color name="colorAccent">#FFC107</color>
 
+    <color name="primary">#F44336</color>
+    <color name="accent">#FFC107</color>
+    <color name="primary_dark">#D32F2F</color>
+
     <color name="textTitle">#B3000000</color>
     <color name="textDate">#4D000000</color>
     <color name="textContent">#4D000000</color>
