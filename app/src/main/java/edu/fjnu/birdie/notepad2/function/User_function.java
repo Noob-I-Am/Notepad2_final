@@ -1,5 +1,6 @@
 package edu.fjnu.birdie.notepad2.function;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -33,7 +34,57 @@ public class User_function {
     private Socket socket;
     public static int isLogin = 0 ;
 
+    public String restore(SQLiteDatabase sql,String uid)
+    {
+        try {
+            socket=new Socket(server_ip,server_port);
+            in = new DataInputStream(socket.getInputStream());
+            out = new DataOutputStream(socket.getOutputStream());
+            out.writeUTF("restore");
+            out.writeUTF(uid);
+            JSONArray array = new JSONArray(in.readUTF());
+            for(int i=0;i<array.length();i++)
+            {
+                    JSONObject json=array.getJSONObject(i);
+                    String s="delete from "+NotePad.Notes.TABLE_NAME_NOTES;
+                    sql.execSQL(s);
+                    String id=(String)json.get("id");
+                    String title=(String)json.get("title");
+                    String contain=(String)json.get("contain");
+                    String date=(String)json.get("date");
+                    String dirid=(String)json.get("dirid");
+                    ContentValues values=new ContentValues();
+                    values.put(NotePad.Notes._ID   ,id);
+                    values.put(NotePad.Notes.COLUMN_NAME_NOTE_TITLE  ,title);
+                    values.put(NotePad.Notes.COLUMN_NAME_NOTE_CONTENT,contain);
+                    values.put(NotePad.Notes.COLUMN_NAME_NOTE_DATE,date);
+                    values.put(NotePad.Notes.COLUMN_NAME_NOTE_CATEGORY,dirid);
+                    sql.insert(NotePad.Notes.TABLE_NAME_NOTES,null,values);
 
+                return "success";
+            }
+
+        } catch (IOException e) {
+            Log.d("---register", e.getMessage());
+        }
+        catch (JSONException e) {
+            // TODO 自动生成的 catch 块
+            e.printStackTrace();
+        }
+        finally
+        {
+            try {
+                in.close();
+                out.close();
+                socket.close();
+            }
+            catch(Exception e)
+            {
+                Log.d("---backup", e.getMessage());
+            }
+        }
+        return "failue";
+    }
 
     public String backup(SQLiteDatabase sql, String id)
     {
