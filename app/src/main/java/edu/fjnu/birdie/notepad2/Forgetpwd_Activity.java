@@ -29,7 +29,7 @@ public class Forgetpwd_Activity extends AppCompatActivity {
                 if(result.equals("success")) {
                     //Toast.makeText(Forgetpwd_Activity.this, "重置成功，密码为888888", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent( Forgetpwd_Activity.this ,Updatepwd_Activity.class);
-                    intent.putExtra("state","byMail");
+                    intent.putExtra("state",1);
                     startActivity(intent);
                 }
                 else
