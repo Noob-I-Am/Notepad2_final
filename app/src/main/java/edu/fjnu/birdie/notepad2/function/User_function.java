@@ -4,10 +4,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -37,6 +33,9 @@ public class User_function {
 
     public String backup(SQLiteDatabase sql, String id)
     {
+        Data data=new Data();
+        data.setInfo("backup");
+        data.setId(id);
         String[] col={NotePad.Notes._ID ,
                 NotePad.Notes.COLUMN_NAME_NOTE_TITLE ,
                 NotePad.Notes.COLUMN_NAME_NOTE_CONTENT,
@@ -44,29 +43,25 @@ public class User_function {
                 NotePad.Notes.COLUMN_NAME_NOTE_DATE };
         final Cursor result=sql.query(NotePad.Notes.TABLE_NAME_NOTES,col,null,
                 null,null,null,null);
-        JSONArray array = new JSONArray();
+        ArrayList<Text> list=new ArrayList<Text>();
         while(result.moveToNext())
         {
-            JSONObject json=new JSONObject();
-	        	try {
-					json.put("id", result.getString(0));
-					json.put("title", result.getString(0));
-					json.put("contain", result.getString(0));
-                    json.put("date", result.getString(0));
-                    json.put("dirid", result.getString(0));
-				} catch (JSONException e) {
-					// TODO 自动生成的 catch 块
-					e.printStackTrace();
-				}
-	        	array.put(json);
+            Text t=new Text();
+            t.setId(result.getString(0));
+            t.setTitle(result.getString(1));
+            t.setContain(result.getString(2));
+            t.setDate(result.getString(4));
+            t.setDirid(result.getString(3));
+            Log.d("----backup",result.getString(0)+""+result.getString(1));
+            list.add(t);
         }
+        data.setList(list);
         try {
             socket=new Socket(server_ip,server_port);
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
             out.writeUTF("backup");
-            out.writeUTF(id);
-            out.writeUTF(array.toString());
+            out.write(ObjectToByte(data));
             String info=in.readUTF();
             return info;
         } catch (IOException e) {
