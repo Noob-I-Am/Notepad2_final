@@ -52,6 +52,7 @@ public class User_function {
             t.setContain(result.getString(2));
             t.setDate(result.getString(4));
             t.setDirid(result.getString(3));
+            Log.d("----backup",result.getString(0)+""+result.getString(1));
             list.add(t);
         }
         data.setList(list);
