@@ -15,6 +15,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -35,6 +36,60 @@ public class User_function {
     private DataOutputStream out=null;
     private Socket socket;
     public static int isLogin = 0 ;
+
+
+    public String restore_ima(String id)
+    {
+        String info="failure";
+        File Imagefile=new File("/storage/emulated/0/Notepad/Pic/");
+        if(Imagefile.exists())
+        {
+            Imagefile.delete();
+        }
+        Imagefile.mkdir();
+        try {
+            socket=new Socket(server_ip,server_port);
+            in = new DataInputStream(socket.getInputStream());
+            out = new DataOutputStream(socket.getOutputStream());
+            out.writeUTF("backup_ima");
+            out.writeUTF(id);
+            String r=in.readUTF();
+            if(r.equals("begin"))
+            {
+                int num=in.readInt();
+                for(int i=0;i<num;i++)
+                {
+                    String name=in.readUTF();
+                    int size = in.readInt();
+                    FileOutputStream fos = new FileOutputStream("/storage/emulated/0/Notepad/Pic/"+name);
+                    byte[] data = new byte[size];
+                    int len = 0;
+                    while (len < size) {
+                        len += in.read(data, len, size - len);
+                    }
+                    fos.write(data);
+                    fos.close();
+                }
+            }
+            info=in.readUTF();
+        } catch (IOException e) {
+            Log.d("---updatepwd", e.getMessage());
+            e.printStackTrace();
+        }
+        finally
+        {
+            try {
+                in.close();
+                out.close();
+                socket.close();
+            }
+            catch(Exception e)
+            {
+                Log.d("---forgetpwd", e.getMessage());
+            }
+        }
+        return info;
+    }
 
     public String backup_ima(String id)
     {

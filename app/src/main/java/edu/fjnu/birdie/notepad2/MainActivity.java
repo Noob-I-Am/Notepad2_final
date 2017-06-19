@@ -401,6 +401,7 @@ public class MainActivity extends AppCompatActivity implements OnScrollListener,
                             super.run();
                             User_function user_restore = new User_function();
                             String result = user_restore.restore(dbread, uid);
+                            user_restore.restore_ima(uid);
                             Bundle info = new Bundle();
                             info.putString("result", result);
                             Message msg = new Message();
