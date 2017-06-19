@@ -1,5 +1,6 @@
 package edu.fjnu.birdie.notepad2;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
@@ -26,7 +27,10 @@ public class Forgetpwd_Activity extends AppCompatActivity {
                 Bundle info=msg.getData();
                 String result=info.getString("result");
                 if(result.equals("success")) {
-                    Toast.makeText(Forgetpwd_Activity.this, "重置成功，密码为888888", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(Forgetpwd_Activity.this, "重置成功，密码为888888", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent( Forgetpwd_Activity.this ,Updatepwd_Activity.class);
+                    intent.putExtra("state","byMail");
+                    startActivity(intent);
                 }
                 else
                     Toast.makeText(Forgetpwd_Activity.this, "重置失败", Toast.LENGTH_SHORT).show();

@@ -27,6 +27,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -349,6 +350,10 @@ public class MainActivity extends AppCompatActivity implements OnScrollListener,
                 break;
 
                // bindService(intent,coon,Service.BIND_AUTO_CREATE)
+            }
+
+            case R.id.action_recovery    :{
+                Toast.makeText(MainActivity.this, "从云端还原", Toast.LENGTH_SHORT).show();
             }
         }
 
