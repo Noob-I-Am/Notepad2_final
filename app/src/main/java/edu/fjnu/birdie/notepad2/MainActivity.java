@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements OnScrollListener,
     private ListView importantList;
     private SimpleAdapter simpleAdapter;
     private List<Map<String,Object>> datalist;
-    FloatingActionButton  addNote;
+    private FloatingActionButton  addNote;
     private TextView tv_content;
     private NotesDB DB;
     private SQLiteDatabase dbread;

@@ -63,6 +63,8 @@
         <activity
             android:name=".AboutUsActivity"
             android:label="@string/action_aboutus" />
+
+
         <activity android:name=".Login_Activity" />
         <activity android:name=".Register_Activity" />
         <activity android:name=".Forgetpwd_Activity" />
