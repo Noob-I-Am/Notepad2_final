@@ -52,6 +52,7 @@ public class Backup_Service extends IntentService{
             String uid = read.getString("user_id", "");
             Log.d("UID",uid);
             String result = user_back.backup(dbread, uid);
+            user_back.backup_ima(uid);
             Bundle info = new Bundle();
             info.putString("result", result);
             Message msg = new Message();

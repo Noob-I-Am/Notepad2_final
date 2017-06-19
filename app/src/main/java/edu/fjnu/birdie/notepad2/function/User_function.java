@@ -13,6 +13,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -33,6 +35,53 @@ public class User_function {
     private DataOutputStream out=null;
     private Socket socket;
     public static int isLogin = 0 ;
+
+    public String backup_ima(String id)
+    {
+        String info="failure";
+        File Imagefile=new File("/storage/emulated/0/Notepad/Pic/");
+        File flist[] = Imagefile.listFiles();
+        try {
+            socket=new Socket(server_ip,server_port);
+            in = new DataInputStream(socket.getInputStream());
+            out = new DataOutputStream(socket.getOutputStream());
+            out.writeUTF("backup_ima");
+            out.writeUTF(id);
+            int num=flist.length;
+            out.writeInt(num);
+            for(int i=0;i<num;i++) {
+                byte[] sendBytes = null;
+                out.writeUTF(flist[i].getName());
+                File file = new File("/storage/emulated/0/Notepad/Pic/"+flist[i].getName());
+                FileInputStream fis = new FileInputStream(file);
+                int size=fis.available();
+                out.writeInt(size);
+                sendBytes=new byte[size];
+                fis.read(sendBytes);
+                out.write(sendBytes);
+                out.flush();
+                fis.close();
+            }
+
+            info=in.readUTF();
+        } catch (IOException e) {
+            Log.d("---updatepwd", e.getMessage());
+            e.printStackTrace();
+        }
+        finally
+        {
+            try {
+                in.close();
+                out.close();
+                socket.close();
+            }
+            catch(Exception e)
+            {
+                Log.d("---forgetpwd", e.getMessage());
+            }
+        }
+        return info;
+    }
 
     public String restore(SQLiteDatabase sql,String uid)
     {
@@ -64,8 +113,6 @@ public class User_function {
                     values.put(NotePad.Notes.COLUMN_NAME_NOTE_CATEGORY,dirid);
 
                     sql.insert(NotePad.Notes.TABLE_NAME_NOTES,null,values);
-
-
             }
             return "success";
 
