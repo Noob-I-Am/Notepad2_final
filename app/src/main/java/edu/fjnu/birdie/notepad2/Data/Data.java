@@ -1,12 +1,10 @@
 package edu.fjnu.birdie.notepad2.Data;
 
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/**
- * Created by TOSHIBA on 2017/6/19.
- */
-public class Data implements Serializable {
+public class Data implements Serializable{
     private String info;
     private String id;
     private ArrayList<Text> list;

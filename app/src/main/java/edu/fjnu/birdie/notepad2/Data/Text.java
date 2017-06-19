@@ -2,9 +2,6 @@ package edu.fjnu.birdie.notepad2.Data;
 
 import java.io.Serializable;
 
-/**
- * Created by TOSHIBA on 2017/6/19.
- */
 public class Text implements Serializable {
 
     String id;
