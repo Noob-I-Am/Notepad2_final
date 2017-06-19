@@ -1,16 +1,20 @@
 package edu.fjnu.birdie.notepad2;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -36,6 +40,7 @@ import java.util.Map;
 import edu.fjnu.birdie.notepad2.Utils.NoteCursorAdapter;
 import edu.fjnu.birdie.notepad2.Utils.NotePad;
 import edu.fjnu.birdie.notepad2.Utils.NotesDB;
+import edu.fjnu.birdie.notepad2.function.User_function;
 
 public class MainActivity extends AppCompatActivity implements OnScrollListener,
         OnItemClickListener , OnItemLongClickListener {
@@ -54,6 +59,24 @@ public class MainActivity extends AppCompatActivity implements OnScrollListener,
     public SearchView searchView;
     //DatabaseManager dbManager;
     public String setCategory;
+    ProgressDialog pd;
+
+    Handler restore_handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if(msg.what==0x11)
+            {
+                Bundle info=msg.getData();
+                String result=info.getString("result");
+                if(result.equals("success"))
+                    Toast.makeText(MainActivity.this, "还原成功", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(MainActivity.this, "还原失败", Toast.LENGTH_SHORT).show();
+
+            }
+        }
+    };
 
 
     @Override
@@ -353,7 +376,39 @@ public class MainActivity extends AppCompatActivity implements OnScrollListener,
             }
 
             case R.id.action_recovery    :{
-                Toast.makeText(MainActivity.this, "从云端还原", Toast.LENGTH_SHORT).show();
+                SharedPreferences read=getSharedPreferences("login",MODE_PRIVATE);
+                if(read.contains("user_id")) {
+                    final String uid = read.getString("user_id", "");
+                    pd = new ProgressDialog(MainActivity.this);
+                    // 设置对话框的标题
+                    pd.setTitle("还原");
+                    // 设置对话框显示的内容
+                    pd.setMessage("正在还原中，请等待...");
+                    // 设置对话框能用“取消”按钮关闭
+                    pd.setCancelable(false);
+                    // 设置对话框的进度条风格
+                    pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    // 设置对话框的进度条是否显示进度
+                    pd.setIndeterminate(false);
+                    pd.show(); // ②
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            User_function user_restore = new User_function();
+                            String result = user_restore.restore(dbread, uid);
+                            Bundle info = new Bundle();
+                            info.putString("result", result);
+                            Message msg = new Message();
+                            msg.what = 0x11;
+                            msg.setData(info);
+                            pd.dismiss();
+                            restore_handler.sendMessage(msg);
+                        }
+                    }.start();
+                }
+                else
+                    Toast.makeText(MainActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
             }
         }
 
