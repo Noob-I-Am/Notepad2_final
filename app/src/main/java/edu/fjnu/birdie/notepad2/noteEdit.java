@@ -36,6 +36,10 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Matcher;
@@ -60,6 +64,7 @@ public class noteEdit extends AppCompatActivity {
     public static String last_title;
     public static int id;
     public String setCategory;
+    public static String CopyRe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -351,12 +356,19 @@ public class noteEdit extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             if (requestCode == 1) {
 
+                String OldPath = null;
+                String NewPath = "/storage/emulated/0/Notepad/Pic/";
+                File file = new File(NewPath);
+                if (!file.exists() || !file.isDirectory())
+                    file.mkdirs();
+                Log.d("NewPath",NewPath);
                 Uri originalUri = intent.getData();
                 //String Imgpath = getRealFilePath(this,originalUri);//得到图片真实路径
-                String Imgpath = getPath(this,originalUri);
+                String Imgpath_o = getPath(this,originalUri);
+                OldPath = Imgpath_o;
+                String Imgpath = copyFile(OldPath,NewPath);
                 Uri realUri = Uri.parse("file://"+Imgpath);//真实路径转化为Uri
-                String realPath = "content://media/"+Imgpath;
-
+                String realPath = "content://media/"+Imgpath_o;
                 Log.d("originalUri",originalUri.toString() );
                 Log.d("imgpath",Imgpath);
                 Log.d("realUri",realUri.toString());
@@ -394,6 +406,10 @@ public class noteEdit extends AppCompatActivity {
     //http://blog.csdn.net/huangyanan1989/article/details/17263203
     public static String getPath(final Context context, final Uri uri) {
 
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmSS");
+        String dateNum = sdf.format(date);
+        String NewPath = "/storage/emulated/NotepadFile/"+dateNum;
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
 
         // DocumentProvider
@@ -486,6 +502,35 @@ public class noteEdit extends AppCompatActivity {
 
     public static boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
+    }
+
+    //文件拷贝至目录
+    public static String copyFile(String oldPath, String newPath) {
+        try {
+            int bytesum = 0;
+            int byteread = 0;
+            File oldfile = new File(oldPath);
+            CopyRe = newPath+File.separator+oldfile.getName();
+            if (oldfile.exists()) { //文件不存在时
+                InputStream inStream = new FileInputStream(oldPath); //读入原文件
+                FileOutputStream fs = new FileOutputStream(newPath+File.separator+oldfile.getName());
+                byte[] buffer = new byte[1024];
+                int length;
+                while ( (byteread = inStream.read(buffer)) != -1) {
+                    bytesum += byteread; //字节数 文件大小
+                    System.out.println(bytesum);
+                    fs.write(buffer, 0, byteread);
+                }
+                Log.d("复制","成功");
+                inStream.close();
+            }
+        }
+        catch (Exception e) {
+            System.out.println("复制单个文件操作出错");
+            e.printStackTrace();
+
+        }
+        return CopyRe;
     }
 
 
