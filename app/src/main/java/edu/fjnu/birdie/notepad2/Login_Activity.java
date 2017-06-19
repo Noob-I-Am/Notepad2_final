@@ -32,6 +32,10 @@ public class Login_Activity extends AppCompatActivity {
                 String result=info.getString("result");
                 if(result.equals("success")) {
                     Toast.makeText(Login_Activity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                    SharedPreferences r=getSharedPreferences("login",MODE_PRIVATE);
+                    SharedPreferences.Editor e=r.edit();
+                    e.putString("user_id",info.getString("user_id"));
+                    e.commit();
                     if(remember_user.isChecked())
                     {
                         SharedPreferences read=getSharedPreferences("user",MODE_PRIVATE);

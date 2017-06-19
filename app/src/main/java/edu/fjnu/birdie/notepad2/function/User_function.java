@@ -1,5 +1,7 @@
 package edu.fjnu.birdie.notepad2.function;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.io.ByteArrayInputStream;
@@ -10,6 +12,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+
+import edu.fjnu.birdie.notepad2.Data.Data;
+import edu.fjnu.birdie.notepad2.Data.Text;
+import edu.fjnu.birdie.notepad2.Utils.NotePad;
 
 /**
  * Created by TOSHIBA on 2017/6/18.
@@ -22,6 +29,56 @@ public class User_function {
     private Socket socket;
 
 
+
+    public String backup(SQLiteDatabase sql, String id)
+    {
+        Data data=new Data();
+        data.setInfo("backup");
+        data.setId(id);
+        String[] col={NotePad.Notes._ID ,
+                NotePad.Notes.COLUMN_NAME_NOTE_TITLE ,
+                NotePad.Notes.COLUMN_NAME_NOTE_CONTENT,
+                NotePad.Notes.COLUMN_NAME_NOTE_CATEGORY ,
+                NotePad.Notes.COLUMN_NAME_NOTE_DATE };
+        final Cursor result=sql.query(NotePad.Notes.TABLE_NAME_NOTES,col,null,
+                null,null,null,null);
+        ArrayList<Text> list=new ArrayList<Text>();
+        while(result.moveToNext())
+        {
+            Text t=new Text();
+            t.setId(result.getString(0));
+            t.setTitle(result.getString(1));
+            t.setContain(result.getString(2));
+            t.setDate(result.getString(4));
+            t.setDirid(result.getString(3));
+            list.add(t);
+        }
+        data.setList(list);
+        try {
+            socket=new Socket(server_ip,server_port);
+            in = new DataInputStream(socket.getInputStream());
+            out = new DataOutputStream(socket.getOutputStream());
+            out.writeUTF("backup");
+            out.write(ObjectToByte(data));
+            String info=in.readUTF();
+            return info;
+        } catch (IOException e) {
+            Log.d("---backup", e.getMessage());
+        }
+        finally
+        {
+            try {
+                in.close();
+                out.close();
+                socket.close();
+            }
+            catch(Exception e)
+            {
+                Log.d("---backup", e.getMessage());
+            }
+        }
+        return "failue";
+    }
 
     public String updatepwd(String id,String pwd1,String pwd2)
     {
